@@ -88,6 +88,26 @@ wordCountButton.addEventListener("click", function () {
 
     result.textContent = "Word count: " + text.split(/\s+/).length;
 });
+       const copyButton = document.getElementById("copyBtn");
+
+copyButton.addEventListener("click", function () {
+    const textToCopy = result.textContent.trim();
+
+    if (
+        textToCopy === "" ||
+        textToCopy === "Your result will appear here."
+    ) {
+        return;
+    }
+
+    navigator.clipboard.writeText(textToCopy).then(function () {
+        copyButton.textContent = "Copied! ✓";
+
+        setTimeout(function () {
+            copyButton.textContent = "Copy Result";
+        }, 1500);
+    });
+});
 </script> 
    
 </body>
