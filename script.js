@@ -10,5 +10,20 @@ button.addEventListener("click", function () {
         return;
     }
 
-    result.textContent = "Great! Your text is ready to be summarized.";
+    const sentences = text
+        .split(/(?<=[.!?])\s+/)
+        .filter(sentence => sentence.length > 20);
+
+    if (sentences.length === 0) {
+        result.textContent = text;
+        return;
+    }
+
+    const summaryLength = Math.max(1, Math.ceil(sentences.length / 3));
+
+    const summary = sentences
+        .slice(0, summaryLength)
+        .join(" ");
+
+    result.textContent = summary;
 });
