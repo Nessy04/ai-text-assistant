@@ -1,133 +1,138 @@
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>AI Text Assistant</title>
-<link rel="stylesheet" href="style.css?v=5">
+
+    <link rel="stylesheet" href="style.css?v=6">
 </head>
 
 <body>
+
     <h1>AI Text Assistant</h1>
 
-    <p>Paste your text below and let AI help you process it.</p>
+    <p>Paste your text below and let the assistant process it.</p>
 
     <textarea
         id="userText"
-        rows="10"
-        cols="50"
-        placeholder="Enter your text here...">
-    </textarea>
+        placeholder="Enter your text here..."
+    ></textarea>
 
-    <br><br>
+    <div>
+        <button id="summarizeBtn">Summarize</button>
+        <button id="keywordsBtn">Extract Keywords</button>
+        <button id="wordCountBtn">Word Count</button>
+    </div>
 
-<button id="summarizeBtn">Summarize</button>
-<button id="keywordsBtn">Extract Keywords</button>
-<button id="wordCountBtn">Word Count</button>
-    
-    <h2>AI Result</h2>
+    <h2>Result</h2>
+
     <div id="result">
         Your result will appear here.
     </div>
-   <script>
-const button = document.getElementById("summarizeBtn");
-const keywordsButton = document.getElementById("keywordsBtn");
-const wordCountButton = document.getElementById("wordCountBtn");
-const textArea = document.getElementById("userText");
-const result = document.getElementById("result");
 
-button.addEventListener("click", function () {
-    const text = textArea.value.trim();
 
-    if (text === "") {
-        result.textContent = "Please enter some text first.";
-        return;
-    }
+    <script>
 
-    const sentences = text.split(/(?<=[.!?])\s+/);
-    const summaryLength = Math.max(1, Math.ceil(sentences.length / 3));
+        const textArea = document.getElementById("userText");
+        const result = document.getElementById("result");
 
-    result.textContent = sentences.slice(0, summaryLength).join(" ");
-});
+        const summarizeBtn =
+            document.getElementById("summarizeBtn");
 
-keywordsButton.addEventListener("click", function () {
-    const text = textArea.value.trim();
+        const keywordsBtn =
+            document.getElementById("keywordsBtn");
 
-    if (text === "") {
-        result.textContent = "Please enter some text first.";
-        return;
-    }
+        const wordCountBtn =
+            document.getElementById("wordCountBtn");
 
-    const stopWords = [
-        "the", "a", "an", "and", "or", "but",
-        "is", "are", "was", "were", "to",
-        "of", "in", "on", "for", "with", "can"
-    ];
 
-    const words = text
-        .toLowerCase()
-        .replace(/[^\w\s]/g, "")
-        .split(/\s+/);
+        // SUMMARIZE
+        summarizeBtn.addEventListener("click", function () {
 
-    const keywords = [...new Set(
-        words.filter(word =>
-            word.length > 4 && !stopWords.includes(word)
-        )
-    )];
+            const text = textArea.value.trim();
 
-    result.textContent = "Keywords: " + keywords.slice(0, 10).join(", ");
-});
+            if (!text) {
+                result.textContent =
+                    "Please enter some text first.";
+                return;
+            }
 
-wordCountButton.addEventListener("click", function () {
-    const text = textArea.value.trim();
+            const sentences =
+                text.split(/(?<=[.!?])\s+/);
 
-    if (text === "") {
-        result.textContent = "Word count: 0";
-        return;
-    }
+            const summaryLength =
+                Math.max(
+                    1,
+                    Math.ceil(sentences.length / 3)
+                );
 
-    result.textContent = "Word count: " + text.split(/\s+/).length;
-});
-       const copyButton = document.getElementById("copyBtn");
+            result.textContent =
+                sentences
+                    .slice(0, summaryLength)
+                    .join(" ");
+        });
 
-copyButton.addEventListener("click", function () {
-    const textToCopy = result.textContent.trim();
 
-    if (
-        textToCopy === "" ||
-        textToCopy === "Your result will appear here."
-    ) {
-        return;
-    }
+        // EXTRACT KEYWORDS
+        keywordsBtn.addEventListener("click", function () {
 
-    navigator.clipboard.writeText(textToCopy).then(function () {
-        copyButton.textContent = "Copied! ✓";
+            const text = textArea.value.trim();
 
-        setTimeout(function () {
-            copyButton.textContent = "Copy Result";
-        }, 1500);
-    });
-});
-       const copyButton = document.getElementById("copyBtn");
+            if (!text) {
+                result.textContent =
+                    "Please enter some text first.";
+                return;
+            }
 
-copyButton.addEventListener("click", async function () {
-    const textToCopy = result.textContent.trim();
+            const stopWords = [
+                "the", "a", "an", "and", "or",
+                "but", "is", "are", "was", "were",
+                "to", "of", "in", "on", "for",
+                "with", "can", "this", "that"
+            ];
 
-    if (textToCopy === "Your result will appear here.") {
-        return;
-    }
+            const words = text
+                .toLowerCase()
+                .replace(/[^\w\s]/g, "")
+                .split(/\s+/);
 
-    try {
-        await navigator.clipboard.writeText(textToCopy);
-        copyButton.textContent = "Copied! ✓";
+            const keywords =
+                [...new Set(
+                    words.filter(function (word) {
+                        return (
+                            word.length > 4 &&
+                            !stopWords.includes(word)
+                        );
+                    })
+                )];
 
-        setTimeout(function () {
-            copyButton.textContent = "Copy Result";
-        }, 1500);
-    } catch (error) {
-        copyButton.textContent = "Copy failed";
-    }
-});
-</script> 
-   
+            result.textContent =
+                "Keywords: " +
+                keywords.slice(0, 10).join(", ");
+        });
+
+
+        // WORD COUNT
+        wordCountBtn.addEventListener("click", function () {
+
+            const text = textArea.value.trim();
+
+            if (!text) {
+                result.textContent = "Word count: 0";
+                return;
+            }
+
+            const words =
+                text.split(/\s+/);
+
+            result.textContent =
+                "Word count: " + words.length;
+        });
+
+    </script>
+
 </body>
 </html>
