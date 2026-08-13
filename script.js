@@ -1,3 +1,4 @@
+alert("JavaScript works!");
 const button = document.getElementById("summarizeBtn");
 const textArea = document.getElementById("userText");
 const result = document.getElementById("result");
