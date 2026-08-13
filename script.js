@@ -56,3 +56,25 @@ keywordsButton.addEventListener("click", function () {
     const keywords = [...new Set(
         words.filter(word =>
             word
+const copyButton = document.getElementById("copyBtn");
+
+copyButton.addEventListener("click", function () {
+    const textToCopy = result.textContent.trim();
+
+    if (
+        textToCopy === "" ||
+        textToCopy === "Your result will appear here."
+    ) {
+        return;
+    }
+
+    navigator.clipboard.writeText(textToCopy).then(function () {
+        const originalText = copyButton.textContent;
+
+        copyButton.textContent = "Copied! ✓";
+
+        setTimeout(function () {
+            copyButton.textContent = originalText;
+        }, 1500);
+    });
+});
