@@ -108,6 +108,26 @@ copyButton.addEventListener("click", function () {
         }, 1500);
     });
 });
+       const copyButton = document.getElementById("copyBtn");
+
+copyButton.addEventListener("click", async function () {
+    const textToCopy = result.textContent.trim();
+
+    if (textToCopy === "Your result will appear here.") {
+        return;
+    }
+
+    try {
+        await navigator.clipboard.writeText(textToCopy);
+        copyButton.textContent = "Copied! ✓";
+
+        setTimeout(function () {
+            copyButton.textContent = "Copy Result";
+        }, 1500);
+    } catch (error) {
+        copyButton.textContent = "Copy failed";
+    }
+});
 </script> 
    
 </body>
