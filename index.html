@@ -28,7 +28,66 @@
     <div id="result">
         Your result will appear here.
     </div>
-    
-<script src="./script.js?v=4"></script>    
+   <script>
+const button = document.getElementById("summarizeBtn");
+const keywordsButton = document.getElementById("keywordsBtn");
+const wordCountButton = document.getElementById("wordCountBtn");
+const textArea = document.getElementById("userText");
+const result = document.getElementById("result");
+
+button.addEventListener("click", function () {
+    const text = textArea.value.trim();
+
+    if (text === "") {
+        result.textContent = "Please enter some text first.";
+        return;
+    }
+
+    const sentences = text.split(/(?<=[.!?])\s+/);
+    const summaryLength = Math.max(1, Math.ceil(sentences.length / 3));
+
+    result.textContent = sentences.slice(0, summaryLength).join(" ");
+});
+
+keywordsButton.addEventListener("click", function () {
+    const text = textArea.value.trim();
+
+    if (text === "") {
+        result.textContent = "Please enter some text first.";
+        return;
+    }
+
+    const stopWords = [
+        "the", "a", "an", "and", "or", "but",
+        "is", "are", "was", "were", "to",
+        "of", "in", "on", "for", "with", "can"
+    ];
+
+    const words = text
+        .toLowerCase()
+        .replace(/[^\w\s]/g, "")
+        .split(/\s+/);
+
+    const keywords = [...new Set(
+        words.filter(word =>
+            word.length > 4 && !stopWords.includes(word)
+        )
+    )];
+
+    result.textContent = "Keywords: " + keywords.slice(0, 10).join(", ");
+});
+
+wordCountButton.addEventListener("click", function () {
+    const text = textArea.value.trim();
+
+    if (text === "") {
+        result.textContent = "Word count: 0";
+        return;
+    }
+
+    result.textContent = "Word count: " + text.split(/\s+/).length;
+});
+</script> 
+   
 </body>
 </html>
